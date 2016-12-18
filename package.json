@@ -1,0 +1,26 @@
+{
+  "name": "nili",
+  "version": "1.0.0",
+  "description": "old school chat server for larps",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -w",
+    "start": "node ./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amir-arad/nili.git"
+  },
+  "author": "Amir Arad <greenshade@gmail.com> (http://github.com/amir-arad)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amir-arad/nili/issues"
+  },
+  "homepage": "https://github.com/amir-arad/nili#readme",
+  "dependencies": {
+    "blessed": "0.1.81",
+    "blessed-contrib": "4.6.5",
+    "telnet2": "0.0.1",
+    "typescript": "2.1.4"
+  }
+}
