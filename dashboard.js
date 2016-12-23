@@ -1,50 +1,89 @@
 import * as blessed from 'blessed';
 import * as contrib from 'blessed-contrib';
+import * as direction from 'direction';
 
+function renderEditLine(editLine){
+	return editLine.map(segment =>
+		segment.dir === 'rtl' ?
+			segment.text.split('').reverse().join('') :
+			segment.text
+	).join('');
+}
 
+function addKeyToEditLine(editLine, key){
+	const lastSegment = editLine[editLine.length-1];
+	let text = key.sequence || key.ch;
+	const dir = direction(text);
+	if (dir === 'neutral' || dir === lastSegment.dir){
+		lastSegment.text = lastSegment.text + text;
+	} else {
+		editLine.push({dir, text:text});
+	}
+}
+
+function resetEditLine(editLine){
+	editLine.splice(0);
+	editLine.push({dir:'ltr', text:''});
+
+}
+function backspaceEditLine(editLine){
+	const lastSegment = editLine[editLine.length-1];
+	switch (lastSegment.text.length){
+		case 0: break;
+		case 1:
+			(editLine.length > 1)? editLine.pop() : lastSegment.text = '';
+			break;
+		default:
+			lastSegment.text = lastSegment.text.split('').slice(0, -1).join('');
+	}
+}
 export function show(screen) {
 //create layout and widgets
 
 	const grid = new contrib.grid({rows: 12, cols: 1, screen: screen});
 
-	var sparkline = grid.set(0, 0, 3, 1, contrib.sparkline,
-		{
-			label: 'Fluff Analysis'
-			, tags: true
-			, style: {fg: 'yellow', titleFg: 'white'}
-		})
+	let editLine = [];
+	resetEditLine(editLine);
 
-	var log = grid.set(3, 0, 7, 1, contrib.log,
-		{
-			fg: "green"
-			, selectedFg: "green"
-			, label: 'Session Log'
-		})
+	const sparkline = grid.set(0, 0, 3, 1, contrib.sparkline, {
+		label: 'Fluff Analysis'
+		, tags: true
+		, style: {fg: 'yellow', titleFg: 'white'}
+	});
 
+	const log = grid.set(3, 0, 7, 1, contrib.log, {
+		fg: "green"
+		, selectedFg: "green"
+		, label: 'Session Log'
+	});
 
-
-	var text = grid.set(10, 0, 2, 1, blessed.textbox,{
-		//mouse: true,
-		keys: true,
+	const input = grid.set(10, 0, 2, 1, blessed.text,{
 		style: {
 			bg: 'black',
 			fg: 'white'
 		},
-		// height: 1,
-		// width: 20,
-		// left: 1,
-		// top: 3,
 		name: 'input'
 	});
 
-	text.on('submit', function(data) {
-		log.log('line: '+data);
-		text.clearValue();
-		// text.focus();
-		screen.render();
+	screen.on('keypress', function(char, key) {
+		if (key.name !== 'return') {
+			console.log(JSON.stringify(key));
+			if (char.length) {
+				if (key.name === 'enter') {
+					log.log('line: '+renderEditLine(editLine));
+					resetEditLine(editLine);
+					screen.render();
+				} else if (key.name === 'backspace') {
+					backspaceEditLine(editLine);
+					screen.render();
+				} else {
+					addKeyToEditLine(editLine, key);
+				}
+				input.setText(renderEditLine(editLine));
+			}
+		}
 	});
 
-	text.focus();
 //set log dummy data
 	setInterval(function () {
 		var rnd = Math.round(Math.random() * 2)

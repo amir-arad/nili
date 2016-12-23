@@ -17,10 +17,14 @@
     "url": "https://github.com/amir-arad/nili/issues"
   },
   "homepage": "https://github.com/amir-arad/nili#readme",
+  "devDependencies": {
+    "typescript": "2.1.4"
+  },
   "dependencies": {
+    "source-map-support": "0.4.6",
     "blessed": "0.1.81",
     "blessed-contrib": "4.6.5",
-    "telnet2": "0.0.1",
-    "typescript": "2.1.4"
+    "direction": "1.0.0",
+    "telnet2": "0.0.1"
   }
 }
