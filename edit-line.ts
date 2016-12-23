@@ -1,18 +1,23 @@
 import * as direction from 'direction';
+import {autorun, transaction, observable, reaction, asStructure} from 'mobx';
 
 type Segment = {dir:direction.Result, text:string};
 
 export class EditLine{
 	private segments:Segment[];
 
-	constructor(segments:Segment[] = []){
-		this.segments = segments;
+	constructor(){
+		this.segments = observable([]);
 		this.reset();
 	}
 
 	reset(){
 		this.segments.splice(0);
-		this.segments.push({dir:'ltr', text:''});
+		this.segments.push(this.makeSegment('ltr', ''));
+	}
+
+	private makeSegment(dir:direction.Result, text:string){
+		return observable({dir, text});
 	}
 
 	private getLastSegment() {
@@ -33,10 +38,10 @@ export class EditLine{
 		if (dir === 'neutral' || dir === lastSegment.dir){
 			lastSegment.text = lastSegment.text + text;
 		} else {
-			if(this.segments.length === 1){
+			if(lastSegment.text.length === 0){
 				this.segments.pop();
 			}
-			this.segments.push({dir, text:text});
+			this.segments.push(this.makeSegment(dir, text));
 		}
 	}
 
@@ -45,7 +50,7 @@ export class EditLine{
 		switch (lastSegment.text.length){
 			case 0: break;
 			case 1:
-				(this.segments.length > 1)? this.segments.pop() : lastSegment.text = '';
+				this.segments.pop();
 				break;
 			default:
 				lastSegment.text = lastSegment.text.split('').slice(0, -1).join('');

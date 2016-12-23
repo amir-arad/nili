@@ -26,6 +26,7 @@
     "blessed-contrib": "4.6.5",
     "direction": "1.0.0",
     "source-map-support": "0.4.6",
+    "mobx": "2.7.0",
     "telnet2": "0.0.1"
   }
 }
