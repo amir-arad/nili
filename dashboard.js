@@ -1,49 +1,13 @@
 import * as blessed from 'blessed';
 import * as contrib from 'blessed-contrib';
-import * as direction from 'direction';
+import {EditLine} from './edit-line';
 
-function renderEditLine(editLine){
-	return editLine.map(segment =>
-		segment.dir === 'rtl' ?
-			segment.text.split('').reverse().join('') :
-			segment.text
-	).join('');
-}
-
-function addKeyToEditLine(editLine, key){
-	const lastSegment = editLine[editLine.length-1];
-	let text = key.sequence || key.ch;
-	const dir = direction(text);
-	if (dir === 'neutral' || dir === lastSegment.dir){
-		lastSegment.text = lastSegment.text + text;
-	} else {
-		editLine.push({dir, text:text});
-	}
-}
-
-function resetEditLine(editLine){
-	editLine.splice(0);
-	editLine.push({dir:'ltr', text:''});
-
-}
-function backspaceEditLine(editLine){
-	const lastSegment = editLine[editLine.length-1];
-	switch (lastSegment.text.length){
-		case 0: break;
-		case 1:
-			(editLine.length > 1)? editLine.pop() : lastSegment.text = '';
-			break;
-		default:
-			lastSegment.text = lastSegment.text.split('').slice(0, -1).join('');
-	}
-}
 export function show(screen) {
 //create layout and widgets
 
 	const grid = new contrib.grid({rows: 12, cols: 1, screen: screen});
 
-	let editLine = [];
-	resetEditLine(editLine);
+	let editLine = new EditLine();
 
 	const sparkline = grid.set(0, 0, 3, 1, contrib.sparkline, {
 		label: 'Fluff Analysis'
@@ -52,6 +16,7 @@ export function show(screen) {
 	});
 
 	const log = grid.set(3, 0, 7, 1, contrib.log, {
+		bufferLength : 100,
 		fg: "green"
 		, selectedFg: "green"
 		, label: 'Session Log'
@@ -67,19 +32,19 @@ export function show(screen) {
 
 	screen.on('keypress', function(char, key) {
 		if (key.name !== 'return') {
-			console.log(JSON.stringify(key));
-			if (char.length) {
+//			console.log(JSON.stringify(key));
+			if (char && char.length) {
 				if (key.name === 'enter') {
-					log.log('line: '+renderEditLine(editLine));
-					resetEditLine(editLine);
+					log.log('line: '+editLine);
+					editLine.reset();
 					screen.render();
 				} else if (key.name === 'backspace') {
-					backspaceEditLine(editLine);
+					editLine.backspace();
 					screen.render();
 				} else {
-					addKeyToEditLine(editLine, key);
+					editLine.append(key.sequence || key.ch);
 				}
-				input.setText(renderEditLine(editLine));
+				input.setText(''+editLine);
 			}
 		}
 	});

@@ -4,6 +4,7 @@
   "description": "old school chat server for larps",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
     "build:watch": "tsc -w",
     "start": "tsc && node ./dist/index.js"
   },
@@ -21,10 +22,10 @@
     "typescript": "2.1.4"
   },
   "dependencies": {
-    "source-map-support": "0.4.6",
     "blessed": "0.1.81",
     "blessed-contrib": "4.6.5",
     "direction": "1.0.0",
+    "source-map-support": "0.4.6",
     "telnet2": "0.0.1"
   }
 }
