@@ -21,7 +21,10 @@ export class EditLine{
 	}
 
 	private getLastSegment() {
-		return this.segments[this.segments.length - 1];
+		if (!this.segments.length) {
+			this.reset();
+		}
+			return this.segments[this.segments.length - 1];
 	}
 
 	toString(){

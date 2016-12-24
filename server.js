@@ -16,6 +16,7 @@ export function chat(options, sessionHandler){
 		});
 
 		var screen = blessed.screen({
+			align: 'right',
 			smartCSR: true,
 			input: client,
 			output: client,
