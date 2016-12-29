@@ -1,7 +1,7 @@
 # nili
 old school chat server for larps
 
-untested and un-complete (see open issues)
+untested
 
 instructions (requires [node.js](https://nodejs.org/) installed):
  - download code from github
