@@ -1,5 +1,5 @@
 import * as direction from 'direction';
-import {autorun, transaction, observable, reaction, asStructure} from 'mobx';
+import {observable} from 'mobx';
 
 type Segment = {dir:direction.Result, text:string};
 

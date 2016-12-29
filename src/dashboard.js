@@ -2,6 +2,7 @@ import * as blessed from 'blessed';
 import * as contrib from 'blessed-contrib';
 import {EditLine} from './edit-line';
 import {autorun, transaction, observable} from 'mobx';
+import * as messages from '../messages.json';
 
 var logLines = observable([]);
 function addLine(line){
@@ -38,24 +39,21 @@ function reverse(str){
 export function show(screen) {
 //create layout and widgets
 
-	const grid = new contrib.grid({align: 'right',rows: 12, cols: 1, screen: screen});
+	const grid = new contrib.grid({rows: 12, cols: 1, screen: screen});
 
 	const sparkline = grid.set(0, 0, 3, 1, contrib.sparkline, {
-		align: 'right',
-		label: reverse('מערכת נילי')
+		label: messages.appTitle
 		, tags: true
 		, style: {fg: 'yellow', titleFg: 'white'}
 	});
 
 	const log = grid.set(3, 0, 7, 1, blessed.list, {
-		align: 'right',
 		fg: "green"
 		, selectedFg: "green"
-		, label: reverse('יישום משתמש')
+		, label: messages.logTitle
 	});
 
 	const input = grid.set(10, 0, 2, 1, blessed.text,{
-		align: 'right',
 		style: {
 			bg: 'black',
 			fg: 'white'
@@ -83,7 +81,7 @@ export function show(screen) {
 	});
 
 	const disposer1 = autorun(() => {
-		sparkline.setData([reverse('משאבים פנויים'), reverse('פעילות ליבה')], [spark1, spark2]);
+		sparkline.setData([messages.spark1, messages.spark2], [spark1, spark2]);
 		screen.render();
 	});
 
@@ -98,8 +96,7 @@ export function show(screen) {
 		screen.render()
 	});
 
-	logLines.push(reverse('-- חיבור --'));
-
+	logLines.push(messages.connected);
 	let closed = false;
 	return function close(){
 		if (!closed) {
@@ -107,7 +104,7 @@ export function show(screen) {
 			disposer1();
 			disposer2();
 			disposer3();
-			logLines.push(reverse('-- ניתוק --'));
+			logLines.push(messages.disConnected);
 		}
 	}
 }

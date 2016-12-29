@@ -1,4 +1,4 @@
-require('source-map-support').install()
+require('source-map-support').install();
 import {chat} from'./server';
 import {show} from './dashboard';
 
