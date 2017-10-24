@@ -1,6 +1,6 @@
 {
   "name": "nili",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "old school chat server for larps",
   "main": "dist/index.js",
   "engines": {
