@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 require('source-map-support').install();
 import {chat} from'./server';
 import {show} from './dashboard';
