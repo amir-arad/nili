@@ -2,8 +2,18 @@
 old school chat server for larps
 
 untested
+## user instructions
+ - make sure you have [node.js](https://nodejs.org/) installed, version 8 and above.
+ - in the command prompt, run `npm i -g nili@latest` (requires an internet connection)
+    - after a few seconds, the installation is done and a message will appear:
+```commandline
++ nili@1.0.2
+updated 1 package in 8.69s
+```
+(the latest version of the nili server is now installed in your machine)
+ - to run the server simply run `nili` from the command line.
 
-instructions (requires [node.js](https://nodejs.org/) installed):
+## developer instructions
  - download code from github
    - either `git clone git@github.com:amir-arad/nili.git`
    - or download [zip file](https://github.com/amir-arad/nili/archive/master.zip) and extract files to folder `nili`
