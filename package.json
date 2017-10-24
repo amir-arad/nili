@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "old school chat server for larps",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "preferGlobal": true,
+  "bin": "node ./dist/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
@@ -19,7 +24,7 @@
   },
   "homepage": "https://github.com/amir-arad/nili#readme",
   "devDependencies": {
-    "typescript": "2.1.4"
+    "typescript": "2.5.3"
   },
   "dependencies": {
     "blessed": "0.1.81",
