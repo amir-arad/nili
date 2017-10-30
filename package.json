@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
-    "start": "tsc && ./dist/index.js"
+    "start": "tsc && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
